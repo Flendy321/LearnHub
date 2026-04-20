@@ -158,6 +158,70 @@
         color: #000;
     }
 
+   
+    /* ... (previous styles) ... */
+
+    .hero-pattern {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.15; /* Keeps it very subtle */
+        pointer-events: none;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 40px;
+        padding: 40px;
+        filter: blur(1px); /* Softens the icons into the background */
+    }
+
+    .subject-icon {
+        font-size: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Stagger the animations so they don't move together */
+    .subject-icon:nth-child(even) { animation-duration: 8s; animation-delay: 1s; }
+    .subject-icon:nth-child(3n) { animation-duration: 10s; animation-delay: 2s; }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+</style>
+
+<section class="hero">
+    <div class="hero-glow"></div>
+    
+    <div class="hero-pattern">
+        <div class="subject-icon">⚛️</div> <div class="subject-icon">🎹</div> <div class="subject-icon">🧬</div> <div class="subject-icon">⛩️</div> <div class="subject-icon">🎨</div> <div class="subject-icon">📊</div> <div class="subject-icon">📚</div> <div class="subject-icon">🧠</div> <div class="subject-icon">⚖️</div> <div class="subject-icon">🧪</div> <div class="subject-icon">🌌</div> <div class="subject-icon">📐</div> <div class="subject-icon">📜</div> <div class="subject-icon">🏋️</div> <div class="subject-icon">🍣</div> <div class="subject-icon">⚡</div> <div class="subject-icon">🎙️</div> <div class="subject-icon">⛩️</div> 
+    </div>
+    
+    <div class="badge">Start your journey</div>
+    
+    <h1>Learn <span>Anything,</span><br>From Zero to Mastery</h1>
+    
+    <p>Curiosity is your greatest superpower.</p>
+    
+    <div class="hero-cta">
+        <a href="#explore" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            Explore Subjects
+        </a>
+        <a href="#" class="btn btn-secondary">How it works</a>
+    </div>
+
+    <div class="scroll-hint">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
     .btn-primary:hover {
         transform: scale(1.05);
         box-shadow: 0 0 30px rgba(0, 229, 197, 0.3);
