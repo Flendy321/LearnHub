@@ -1,0 +1,790 @@
+Index · HTML
+Copy
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnHub — Learn Anything, From Zero to Mastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+ 
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --teal: #00E5C3;
+    --teal-dim: rgba(0,229,195,0.12);
+    --teal-glow: rgba(0,229,195,0.06);
+    --bg: #0d0f10;
+    --bg2: #111416;
+    --bg3: #161a1d;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(0,229,195,0.3);
+    --text: #f0ece4;
+    --muted: rgba(240,236,228,0.45);
+    --dim: rgba(240,236,228,0.22);
+  }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+ 
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+ 
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(13,15,16,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--border);
+  }
+ 
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+ 
+  .logo-icon {
+    width: 34px; height: 34px;
+    background: var(--teal);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+ 
+  .logo-icon svg { width: 18px; height: 18px; }
+ 
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+ 
+  .logo-text span { color: var(--teal); }
+ 
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+  }
+ 
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    transition: color 0.2s, background 0.2s;
+  }
+ 
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .nav-links a.active { color: var(--text); background: rgba(255,255,255,0.07); }
+ 
+  .nav-links a svg { width: 15px; height: 15px; opacity: 0.7; }
+ 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+ 
+  .nav-icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: none;
+    border: 0.5px solid var(--border);
+    color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+ 
+  .nav-icon-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
+  .nav-icon-btn svg { width: 16px; height: 16px; }
+ 
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px 80px;
+    overflow: hidden;
+  }
+ 
+  .hero-glow {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse at center, rgba(0,229,195,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+ 
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
+    pointer-events: none;
+  }
+ 
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    background: rgba(0,229,195,0.08);
+    border: 0.5px solid rgba(0,229,195,0.25);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+ 
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 8px var(--teal);
+    animation: pulse 2s ease-in-out infinite;
+  }
+ 
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+ 
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--text);
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+ 
+  .hero h1 em {
+    font-style: normal;
+    color: var(--teal);
+  }
+ 
+  .hero p {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 44px;
+    animation: fadeUp 0.8s ease 0.2s both;
+    font-style: italic;
+  }
+ 
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+ 
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    background: var(--teal);
+    color: #0d0f10;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    cursor: pointer;
+  }
+ 
+  .btn-primary:hover { background: #00f5d4; transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0,229,195,0.25); }
+ 
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    border: 0.5px solid var(--border);
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+  }
+ 
+  .btn-secondary:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+ 
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--dim);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: fadeUp 1s ease 0.8s both;
+  }
+ 
+  .scroll-line {
+    width: 0.5px;
+    height: 36px;
+    background: linear-gradient(to bottom, var(--dim), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+ 
+  @keyframes scrollLine { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.2)} }
+ 
+  /* SUBJECTS */
+  .subjects {
+    position: relative;
+    z-index: 1;
+    padding: 20px 48px 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+ 
+  .subjects-header {
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s ease both;
+  }
+ 
+  .subjects-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+ 
+  .subjects-header p {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+ 
+  /* BIG CARD GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+ 
+  /* Featured first two cards span full height differently */
+  .cards-grid .card:nth-child(1),
+  .cards-grid .card:nth-child(2) {
+    grid-row: span 1;
+  }
+ 
+  .card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 0.5px solid var(--border);
+    background: var(--bg3);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, box-shadow 0.35s;
+    animation: fadeUp 0.7s ease both;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-decoration: none;
+  }
+ 
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
+ 
+  .card:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: var(--border-hover);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(0,229,195,0.15);
+  }
+ 
+  /* Card background images via gradient simulation */
+  .card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    filter: brightness(0.45) saturate(0.7);
+  }
+ 
+  .card:hover .card-bg {
+    transform: scale(1.06);
+    filter: brightness(0.55) saturate(0.8);
+  }
+ 
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,15,16,0.95) 0%, rgba(13,15,16,0.4) 50%, transparent 100%);
+    transition: opacity 0.3s;
+  }
+ 
+  .card:hover .card-overlay {
+    background: linear-gradient(to top, rgba(13,15,16,0.98) 0%, rgba(13,15,16,0.5) 60%, transparent 100%);
+  }
+ 
+  .card-content {
+    position: relative;
+    z-index: 2;
+    padding: 28px;
+  }
+ 
+  .card-icon {
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(255,255,255,0.15);
+  }
+ 
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.15;
+  }
+ 
+  .card-desc {
+    font-size: 13px;
+    color: rgba(240,236,228,0.55);
+    font-weight: 300;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+ 
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+ 
+  .card-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 0.5px solid;
+  }
+ 
+  .card-arrow {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+ 
+  .card:hover .card-arrow {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+ 
+  .card:hover .card-arrow svg { color: #0d0f10; }
+ 
+  .card-arrow svg { width: 14px; height: 14px; color: var(--muted); transition: color 0.2s; }
+ 
+  /* Color themes per subject */
+  .theme-teal   { --c: #00E5C3; background: rgba(0,229,195,0.12); color: #00E5C3; border-color: rgba(0,229,195,0.3); }
+  .theme-purple { --c: #a78bfa; background: rgba(167,139,250,0.12); color: #a78bfa; border-color: rgba(167,139,250,0.3); }
+  .theme-amber  { --c: #f59e0b; background: rgba(245,158,11,0.12); color: #f59e0b; border-color: rgba(245,158,11,0.3); }
+  .theme-coral  { --c: #f97316; background: rgba(249,115,22,0.12); color: #f97316; border-color: rgba(249,115,22,0.3); }
+  .theme-blue   { --c: #60a5fa; background: rgba(96,165,250,0.12); color: #60a5fa; border-color: rgba(96,165,250,0.3); }
+  .theme-pink   { --c: #f472b6; background: rgba(244,114,182,0.12); color: #f472b6; border-color: rgba(244,114,182,0.3); }
+  .theme-green  { --c: #4ade80; background: rgba(74,222,128,0.12); color: #4ade80; border-color: rgba(74,222,128,0.3); }
+  .theme-red    { --c: #fb7185; background: rgba(251,113,133,0.12); color: #fb7185; border-color: rgba(251,113,133,0.3); }
+ 
+  /* SUBJECT BACKGROUNDS using CSS gradients to simulate dark atmospheric images */
+  .bg-chemistry {
+    background:
+      radial-gradient(ellipse 60% 40% at 70% 30%, rgba(0,180,150,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(0,100,80,0.25) 0%, transparent 70%),
+      linear-gradient(135deg, #0a1a18 0%, #0d1f1b 50%, #061210 100%);
+  }
+  .bg-philosophy {
+    background:
+      radial-gradient(ellipse 50% 60% at 60% 20%, rgba(120,80,200,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 30% 70%, rgba(80,40,140,0.2) 0%, transparent 70%),
+      linear-gradient(135deg, #100d1a 0%, #160f24 50%, #0c0a14 100%);
+  }
+  .bg-psychology {
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 30%, rgba(245,80,80,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 20% 70%, rgba(180,60,60,0.15) 0%, transparent 70%),
+      linear-gradient(135deg, #1a0d0d 0%, #1f1010 50%, #140a0a 100%);
+  }
+  .bg-business {
+    background:
+      radial-gradient(ellipse 60% 40% at 70% 40%, rgba(245,158,11,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 20% 70%, rgba(180,120,10,0.15) 0%, transparent 70%),
+      linear-gradient(135deg, #1a1400 0%, #1f1800 50%, #141000 100%);
+  }
+  .bg-physics {
+    background:
+      radial-gradient(ellipse 60% 50% at 60% 25%, rgba(60,130,245,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(30,80,200,0.2) 0%, transparent 70%),
+      linear-gradient(135deg, #080f1a 0%, #0c1520 50%, #060c16 100%);
+  }
+  .bg-astronomy {
+    background:
+      radial-gradient(ellipse 40% 40% at 65% 25%, rgba(200,100,255,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 30% 75%, rgba(40,20,100,0.3) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 30% at 80% 70%, rgba(100,180,255,0.15) 0%, transparent 50%),
+      linear-gradient(135deg, #060810 0%, #0a0c18 50%, #04060e 100%);
+  }
+  .bg-mathematics {
+    background:
+      radial-gradient(ellipse 60% 40% at 60% 30%, rgba(0,200,150,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 25% 70%, rgba(0,140,100,0.15) 0%, transparent 70%),
+      linear-gradient(135deg, #081410 0%, #0c1c16 50%, #060e0c 100%);
+  }
+  .bg-history {
+    background:
+      radial-gradient(ellipse 60% 50% at 55% 30%, rgba(200,140,60,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 20% 75%, rgba(150,100,30,0.15) 0%, transparent 70%),
+      linear-gradient(135deg, #180e00 0%, #1e1200 50%, #120a00 100%);
+  }
+ 
+  /* Stars on astronomy card */
+  .stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+  }
+  @keyframes twinkle { 0%,100%{opacity:var(--minop,0.3)} 50%{opacity:1} }
+ 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* RESPONSIVE */
+  @media (max-width: 1100px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 780px)  { .cards-grid { grid-template-columns: repeat(2, 1fr); } nav { padding: 0 24px; } .hero h1 { font-size: 44px; } .subjects { padding: 20px 24px 80px; } }
+  @media (max-width: 480px)  { .cards-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+ 
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0d0f10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+    </div>
+    <span class="logo-text">Learn<span>Hub</span></span>
+  </a>
+ 
+  <ul class="nav-links">
+    <li><a href="#subjects" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Explore
+    </a></li>
+    <li><a href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Progress
+    </a></li>
+    <li><a href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      Bookmarks
+    </a></li>
+  </ul>
+ 
+  <div class="nav-right">
+    <button class="nav-icon-btn" title="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-icon-btn" title="Toggle theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</nav>
+ 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+ 
+  <div class="badge">Start your journey</div>
+ 
+  <h1>Learn <em>Anything,</em><br>From Zero to Mastery</h1>
+  <p>Curiosity is your greatest superpower.</p>
+ 
+  <div class="hero-cta">
+    <a href="#subjects" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16 10,8"/></svg>
+      Explore Subjects
+    </a>
+    <a href="#" class="btn-secondary">How it works</a>
+  </div>
+ 
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+ 
+<!-- SUBJECTS -->
+<section class="subjects" id="subjects">
+  <div class="subjects-header">
+    <h2>Explore Subjects</h2>
+    <p>Choose a subject and start your journey</p>
+  </div>
+ 
+  <div class="cards-grid">
+ 
+    <!-- Chemistry -->
+    <a class="card" href="subjects/chemistry.html">
+      <div class="card-bg bg-chemistry"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-teal">⚗️</div>
+        <div class="card-title">Chemistry</div>
+        <div class="card-desc">Explore the building blocks of matter, from atoms to reactions that power our world.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-teal">Natural Science</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Philosophy -->
+    <a class="card" href="subjects/philosophy.html">
+      <div class="card-bg bg-philosophy"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-purple">🧠</div>
+        <div class="card-title">Philosophy</div>
+        <div class="card-desc">Question reality, ethics, and the nature of existence through history's greatest thinkers.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-purple">Humanities</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Psychology -->
+    <a class="card" href="subjects/psychology.html">
+      <div class="card-bg bg-psychology"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-coral">🫀</div>
+        <div class="card-title">Psychology</div>
+        <div class="card-desc">Understand the human mind, behaviour, and what drives every decision we make.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-coral">Mind & Behaviour</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Business & Money -->
+    <a class="card" href="subjects/business.html">
+      <div class="card-bg bg-business"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-amber">💼</div>
+        <div class="card-title">Business & Money</div>
+        <div class="card-desc">Master economics, entrepreneurship, and the systems that move money around the world.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-amber">Economics</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Physics -->
+    <a class="card" href="subjects/physics.html">
+      <div class="card-bg bg-physics"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-blue">⚛️</div>
+        <div class="card-title">Physics</div>
+        <div class="card-desc">Uncover the fundamental laws that govern space, time, energy, and matter itself.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-blue">Natural Science</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Astronomy -->
+    <a class="card" href="subjects/astronomy.html">
+      <div class="card-bg bg-astronomy"></div>
+      <div class="card-overlay"></div>
+      <div class="stars" id="stars-astronomy"></div>
+      <div class="card-content">
+        <div class="card-icon theme-pink">🌌</div>
+        <div class="card-title">Astronomy</div>
+        <div class="card-desc">Journey through galaxies, black holes, and the cosmic forces shaping our universe.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-pink">Space Science</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Mathematics -->
+    <a class="card" href="subjects/mathematics.html">
+      <div class="card-bg bg-mathematics"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-green">∑</div>
+        <div class="card-title">Mathematics</div>
+        <div class="card-desc">From counting to calculus — the universal language behind every field of human knowledge.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-green">Formal Science</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- History -->
+    <a class="card" href="subjects/history.html">
+      <div class="card-bg bg-history"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-icon theme-red">📜</div>
+        <div class="card-title">History</div>
+        <div class="card-desc">Trace the rise and fall of civilisations and the events that shaped humanity's story.</div>
+        <div class="card-footer">
+          <span class="card-tag theme-red">Humanities</span>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </a>
+ 
+  </div>
+</section>
+ 
+<script>
+  // Generate stars for astronomy card
+  const container = document.getElementById('stars-astronomy');
+  for (let i = 0; i < 40; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2 + 0.5;
+    star.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      top: ${Math.random() * 60}%;
+      left: ${Math.random() * 100}%;
+      --d: ${2 + Math.random() * 3}s;
+      --delay: ${Math.random() * 4}s;
+      --minop: ${0.1 + Math.random() * 0.3};
+      opacity: ${Math.random() * 0.6 + 0.1};
+    `;
+    container.appendChild(star);
+  }
+ 
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+ 
+  // Intersection observer for card entrance animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.style.animationPlayState = 'running';
+    });
+  }, { threshold: 0.1 });
+ 
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.animationPlayState = 'paused';
+    observer.observe(card);
+  });
+</script>
+ 
+</body>
+</html>
