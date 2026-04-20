@@ -26,6 +26,7 @@ Copy
     --text: #f0ece4;
     --muted: rgba(240,236,228,0.45);
     --dim: rgba(240,236,228,0.22);
+    --bg: #050505;
   }
  
   html { scroll-behavior: smooth; }
@@ -38,6 +39,10 @@ Copy
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
+    background: var(--bg);
+  background-image: radial-gradient(circle at 50% 40%, #0d1212 0%, #050505 60%);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
   }
  
   /* NOISE OVERLAY */
@@ -151,24 +156,20 @@ Copy
   }
  
   .hero-glow {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 800px; height: 500px;
-    background: radial-gradient(ellipse at center, rgba(0,229,195,0.08) 0%, transparent 70%);
-    pointer-events: none;
+   position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 60vh;
+  background: radial-gradient(circle at center, rgba(0, 229, 195, 0.04) 0%, transparent 70%);
+  filter: blur(80px); /* This softens the edges significantly */
+  pointer-events: none;
+  z-index: -1;
   }
  
   .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
-    pointer-events: none;
+   display: none;
   }
  
   .badge {
@@ -209,8 +210,16 @@ Copy
   }
  
   .hero h1 em {
-    font-style: normal;
-    color: var(--teal);
+    .hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(48px, 6vw, 72px); /* Slightly smaller than your current 88px */
+  font-weight: 700; /* Dropping from 800 for a cleaner look */
+  line-height: 1.1;
+  letter-spacing: -0.01em; /* Less aggressive than -0.035em */
+  color: var(--text);
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
   }
  
   .hero p {
